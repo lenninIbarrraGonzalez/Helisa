@@ -1,25 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import Search from './Search';
-import { getPokemons } from '../../api';
+import React from 'react';
+import Pokemon from './Pokemon';
 
-const Pokedex = () => {
-  const [pokemons, setPokemons] = useState([]);
-
-  const fetchPokemons = async () => {
-    try {
-      const data = await getPokemons();
-      console.log(data);
-    } catch (err) {}
-  };
-
-  useEffect(() => {
-    fetchPokemons();
-  }, []);
-
+const Pokedex = (props) => {
+  // console.log("props", props);
+  const { pokemons } = props;
   return (
     <div>
-      <h1>Pokemones</h1>
-      <Search />
+      {pokemons.map((pokemon, idx) => (
+        <Pokemon pokemon={pokemon} key={pokemon.name} />
+      ))}
     </div>
   );
 };
