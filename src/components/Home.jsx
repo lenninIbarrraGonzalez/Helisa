@@ -3,6 +3,8 @@ import Search from './Search';
 import { getPokemons, getPokemonData } from '../../api';
 import Pokedex from './Pokedex';
 import '../styles/home.css';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 const Home = () => {
   const [pokemons, setPokemons] = useState([]);
@@ -24,11 +26,14 @@ const Home = () => {
   }, []);
 
   return (
-    <div key={pokemons.name} className="home">
-      <h1>Pokemones</h1>
-      {/* <Search /> */}
-      <Pokedex pokemons={pokemons} />
-    </div>
+    <>
+      <CssBaseline />
+      <Container maxWidth="lg">
+        <h1>Pokemones</h1>
+        {/* <Search /> */}
+        <Pokedex pokemons={pokemons} />
+      </Container>
+    </>
   );
 };
 
