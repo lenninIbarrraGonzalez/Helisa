@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Search from './Search';
 import { getPokemons, getPokemonData } from '../../api';
 import Pokedex from './Pokedex';
+import '../styles/home.css';
 
 const Home = () => {
   const [pokemons, setPokemons] = useState([]);
@@ -10,9 +11,9 @@ const Home = () => {
     try {
       const data = await getPokemons();
       // console.log("data.results", data.results);
-      const promises = data.results.map(async (pokemon) => {
-        return await getPokemonData(pokemon.url);
-      });
+      const promises = data.results.map(
+        async (pokemon) => await getPokemonData(pokemon.url)
+      );
       const results = await Promise.all(promises);
       setPokemons(results);
     } catch (err) {}
@@ -23,7 +24,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div key={pokemons.name}>
+    <div key={pokemons.name} className="home">
       <h1>Pokemones</h1>
       {/* <Search /> */}
       <Pokedex pokemons={pokemons} />
