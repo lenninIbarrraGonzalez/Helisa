@@ -8,7 +8,7 @@ export const searchPokemon = async (pokemon) => {
   } catch (error) {}
 };
 
-export const getPokemons = async (limit = 30, offset = 0) => {
+export const getPokemons = async (limit = 15, offset = 0) => {
   try {
     const url = `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`;
     const response = await fetch(url);

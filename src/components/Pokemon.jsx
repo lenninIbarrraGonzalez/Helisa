@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import '../styles/pokemon.css';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
     background: 'bisque',
     borderRadius: 20,
     justifyContent: 'space-between',
+    minHeight: 200,
   },
   details: {
     display: 'flex',
@@ -53,46 +54,66 @@ const useStyles = makeStyles((theme) => ({
 const Pokemon = (props) => {
   const { pokemon } = props;
   const classes = useStyles();
+  const element = useRef(null);
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    // console.log(element.current);
+    const observer = new window.IntersectionObserver((entries) => {
+      const { isIntersecting } = entries[0];
+      console.log(isIntersecting);
+      if (isIntersecting) {
+        setShow(true);
+        observer.disconnect();
+      }
+    });
+
+    observer.observe(element.current);
+  }, [element]);
 
   return (
-    <Card className={classes.root}>
-      <div className={classes.details}>
-        <CardContent>
-          <Typography component="h5" variant="h5">
-            {pokemon.name}
-          </Typography>
-          <Typography variant="subtitle1" color="textSecondary">
-            Heigth: {pokemon.height}
-          </Typography>
-          <Typography variant="subtitle1" color="textSecondary">
-            Weight: {pokemon.weight}
-          </Typography>
+    <Card className={classes.root} ref={element}>
+      {show && (
+        <>
+          <div className={classes.details}>
+            <CardContent>
+              <Typography component="h5" variant="h5">
+                {pokemon.name}
+              </Typography>
+              <Typography variant="subtitle1" color="textSecondary">
+                Heigth: {pokemon.height}
+              </Typography>
+              <Typography variant="subtitle1" color="textSecondary">
+                Weight: {pokemon.weight}
+              </Typography>
 
-          <Typography variant="subtitle1" color="textSecondary">
-            Abilities:
-            {pokemon.abilities.map((item) => (
-              <span className={classes.abilities} key={item.ability.name}>
-                {item.ability.name}
-              </span>
-            ))}
-          </Typography>
-        </CardContent>
-        <div className={classes.controls}>
-          {pokemon.types.map((item) => (
-            <div className={classes.typeNames} key={item.type.name}>
-              {item.type.name}
+              <Typography variant="subtitle1" color="textSecondary">
+                Abilities:
+                {pokemon.abilities.map((item) => (
+                  <span className={classes.abilities} key={item.ability.name}>
+                    {item.ability.name}
+                  </span>
+                ))}
+              </Typography>
+            </CardContent>
+            <div className={classes.controls}>
+              {pokemon.types.map((item) => (
+                <div className={classes.typeNames} key={item.type.name}>
+                  {item.type.name}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
 
-      <div className={classes.img}>
-        <img
-          src={pokemon.sprites.other.dream_world.front_default}
-          alt={pokemon.name}
-          className={classes.imagen}
-        />
-      </div>
+          <div className={classes.img}>
+            <img
+              src={pokemon.sprites.other.dream_world.front_default}
+              alt={pokemon.name}
+              className={classes.imagen}
+            />
+          </div>
+        </>
+      )}
     </Card>
   );
 };
