@@ -5,13 +5,15 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Avatar from '@material-ui/core/Avatar';
+import PropTypes from 'prop-types';
+import SwipeableViews from 'react-swipeable-views';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,20 +62,32 @@ const useStyles = makeStyles((theme) => ({
   abilities: {
     paddingLeft: 3,
   },
-  // large: {
-  //   width: theme.spacing(15),
-  //   height: theme.spacing(15),
-  //   padding:theme.spacing(2)
-  // },
+  tab: {
+    backgroundColor: theme.palette.background.paper,
+    width: 500,
+  },
+  stadic: {
+    width: '100 %',
+  },
+  barras: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  titlePw: {
+    marginRight: theme.spacing(1),
+    textTransform: 'capitalize',
+  },
 }));
 
 const Pokemon = (props) => {
   const { pokemon } = props;
   const classes = useStyles();
   const element = useRef(null);
+  const theme = useTheme();
   const [show, setShow] = useState(false);
+  const [value, setValue] = useState(0);
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -81,6 +95,47 @@ const Pokemon = (props) => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`full-width-tabpanel-${index}`}
+        aria-labelledby={`full-width-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box p={3}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+  }
+
+  TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.any.isRequired,
+    value: PropTypes.any.isRequired,
+  };
+
+  function a11yProps(index) {
+    return {
+      id: `full-width-tab-${index}`,
+      'aria-controls': `full-width-tabpanel-${index}`,
+    };
+  }
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const handleChangeIndex = (index) => {
+    setValue(index);
   };
 
   useEffect(() => {
@@ -155,37 +210,80 @@ const Pokemon = (props) => {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <img
-            src={pokemon.sprites.other.dream_world.front_default}
-            alt={pokemon.name}
-            className={classes.imagen}
-          />
-          <DialogTitle id="alert-dialog-title"> {pokemon.name}</DialogTitle>
-          <DialogContent>
-            <Typography variant="subtitle1" color="textSecondary">
-              Heigth: {pokemon.height}
-            </Typography>
-            <Typography variant="subtitle1" color="textSecondary">
-              Weight: {pokemon.weight}
-            </Typography>
+          <div className={classes.tab}>
+            <img
+              src={pokemon.sprites.other.dream_world.front_default}
+              alt={pokemon.name}
+              className={classes.imagen}
+            />
+            <AppBar position="static" color="default">
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                indicatorColor="primary"
+                textColor="primary"
+                variant="fullWidth"
+                aria-label="full width tabs example"
+              >
+                <Tab label="About" {...a11yProps(0)} />
+                <Tab label="BaseStats" {...a11yProps(1)} />
+                <Tab label="Encounters" {...a11yProps(2)} />
+              </Tabs>
+            </AppBar>
+            <SwipeableViews
+              axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+              index={value}
+              onChangeIndex={handleChangeIndex}
+            >
+              <TabPanel value={value} index={0} dir={theme.direction}>
+                <DialogTitle id="alert-dialog-title">
+                  {' '}
+                  {pokemon.name}
+                </DialogTitle>
+                <DialogContent>
+                  <Typography variant="subtitle1" color="textSecondary">
+                    Heigth: {pokemon.height}
+                  </Typography>
+                  <Typography variant="subtitle1" color="textSecondary">
+                    Weight: {pokemon.weight}
+                  </Typography>
 
-            <Typography variant="subtitle1" color="textSecondary">
-              Abilities:
-              {pokemon.abilities.map((item) => (
-                <span className={classes.abilities} key={item.ability.name}>
-                  {item.ability.name}
-                </span>
-              ))}
-            </Typography>
-          </DialogContent>
-          {/* <DialogActions>
-            <Button onClick={handleClose} color="primary">
-              Disagree
-            </Button>
-            <Button onClick={handleClose} color="primary" autoFocus>
-              Agree
-            </Button>
-          </DialogActions> */}
+                  <Typography variant="subtitle1" color="textSecondary">
+                    Abilities:
+                    {pokemon.abilities.map((item) => (
+                      <span
+                        className={classes.abilities}
+                        key={item.ability.name}
+                      >
+                        {item.ability.name}
+                      </span>
+                    ))}
+                  </Typography>
+                </DialogContent>
+              </TabPanel>
+
+              <TabPanel value={value} index={1} dir={theme.direction}>
+                <Box className={classes.stadic}>
+                  {pokemon.stats.map((item) => (
+                    <div className={classes.barras}>
+                      <div className={classes.titlePw}>{item.stat.name}</div>
+                      <Box
+                        width={`${item.base_stat}%`}
+                        bgcolor="#dc004e"
+                        p={0.3}
+                        my={0.3}
+                      >
+                        {item.base_stat}
+                      </Box>
+                    </div>
+                  ))}
+                </Box>
+              </TabPanel>
+              <TabPanel value={value} index={2} dir={theme.direction}>
+                encuentros
+              </TabPanel>
+            </SwipeableViews>
+          </div>
         </Dialog>
       </div>
     </Card>
