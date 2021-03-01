@@ -8,12 +8,12 @@ const Pokedex = (props) => {
   const { pokemons, page, setPage } = props;
   return (
     <>
-      <Pagination
+      {/* <Pagination
         page={page + 1}
         totalPage={30}
         onLeftClick={console.log}
         onRightClick={console.log}
-      />
+      /> */}
       <div className="pokedex__grid">
         {pokemons.map((pokemon, idx) => (
           <Pokemon pokemon={pokemon} key={pokemon.name} />
