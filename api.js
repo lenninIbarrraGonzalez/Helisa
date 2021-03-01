@@ -32,3 +32,21 @@ export const getPokemonEncounters = async (url) => {
     return data;
   } catch (error) {}
 };
+
+export const getPokemonsType = async () => {
+  try {
+    const url = 'https://pokeapi.co/api/v2/type/';
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log('data getPokeminsType', data);
+    return data;
+  } catch (error) {}
+};
+
+export const getPokemonCountType = async (url) => {
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  } catch (error) {}
+};
