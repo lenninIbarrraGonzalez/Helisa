@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+
 import '../styles/pokemon.css';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -8,12 +9,14 @@ import Typography from '@material-ui/core/Typography';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
+import LinearProgress from '@material-ui/core/LinearProgress';
+
+import { getPokemonEncounters } from '../../api';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,11 +89,26 @@ const Pokemon = (props) => {
   const theme = useTheme();
   const [show, setShow] = useState(false);
   const [value, setValue] = useState(0);
-
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
+    fetchAreas();
+  };
+
+  const fetchAreas = async () => {
+    const { id } = pokemon;
+    const url = `https://pokeapi.co/api/v2/pokemon/${id}/encounters`;
+    try {
+      const data = await getPokemonEncounters(url);
+
+      setCategories(data);
+      setLoading(false);
+      // console.log("categories", categories)
+      // console.log("pokemisn", pokemon)
+    } catch (error) {}
   };
 
   const handleClose = () => {
@@ -116,12 +134,6 @@ const Pokemon = (props) => {
       </div>
     );
   }
-
-  TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.any.isRequired,
-    value: PropTypes.any.isRequired,
-  };
 
   function a11yProps(index) {
     return {
@@ -156,7 +168,6 @@ const Pokemon = (props) => {
       observer.observe(element.current);
     }, [element]);
   });
-  // console.log(element.current);
 
   return (
     <Card ref={element} className={classes.card}>
@@ -166,7 +177,7 @@ const Pokemon = (props) => {
             <div className={classes.details}>
               <CardContent>
                 <Typography component="h5" variant="h5">
-                  {pokemon.name}
+                  {pokemon.name}{' '}
                 </Typography>
                 <Typography variant="subtitle1" color="textSecondary">
                   Heigth: {pokemon.height}
@@ -280,7 +291,9 @@ const Pokemon = (props) => {
                 </Box>
               </TabPanel>
               <TabPanel value={value} index={2} dir={theme.direction}>
-                encuentros
+                {categories.map((item) => (
+                  <Typography>{item.location_area.name}</Typography>
+                ))}
               </TabPanel>
             </SwipeableViews>
           </div>

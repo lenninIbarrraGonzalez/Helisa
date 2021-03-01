@@ -4,7 +4,7 @@ import '../styles/pokedex.css';
 import Pagination from './Pagination';
 
 const Pokedex = (props) => {
-  console.log('props', props);
+  // console.log('props', props);
   const { pokemons, page, setPage } = props;
   return (
     <>
