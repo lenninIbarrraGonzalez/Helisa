@@ -106,8 +106,6 @@ const Pokemon = (props) => {
 
       setCategories(data);
       setLoading(false);
-      // console.log("categories", categories)
-      // console.log("pokemisn", pokemon)
     } catch (error) {}
   };
 
