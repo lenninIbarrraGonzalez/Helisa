@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-
 import '../styles/pokemon.css';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -14,7 +13,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
-import LinearProgress from '@material-ui/core/LinearProgress';
 
 import { getPokemonEncounters } from '../../api';
 
@@ -28,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
   },
   card: {
     borderRadius: 20,
-    // backgroundImage: "linear-gradient(rgba(177, 26, 38, 1), rgba(61, 153, 80, 1))",
   },
   details: {
     display: 'flex',
@@ -38,11 +35,10 @@ const useStyles = makeStyles((theme) => ({
   controls: {
     display: 'flex',
     alignItems: 'center',
-    // background: 'violet',
   },
   typeNames: {
     borderRadius: 7,
-    // backgroundColor: 'aqua',
+    borderBlockStyle: 'outset',
     padding: theme.spacing(1),
     marginLeft: theme.spacing(2),
     marginBottom: theme.spacing(1),
@@ -54,14 +50,11 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     marginTop: 20,
     width: '40%',
-    // height: 150,
-    // background: 'red',
     overflow: 'hidden',
   },
   imagen: {
     width: '100%',
     height: 120,
-    // background: 'yellow',
   },
   abilities: {
     paddingLeft: 3,
@@ -222,7 +215,6 @@ const Pokemon = (props) => {
     ).then(() => {
       const observer = new window.IntersectionObserver((entries) => {
         const { isIntersecting } = entries[0];
-        // console.log(isIntersecting);
         if (isIntersecting) {
           setShow(true);
           observer.disconnect();
