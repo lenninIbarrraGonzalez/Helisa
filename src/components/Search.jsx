@@ -1,38 +1,53 @@
 import React, { useState } from 'react';
-import { searchPokemon } from '../../api';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
 
-const Search = () => {
-  // const { onSearch } = props;
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: theme.spacing(2),
+    width: '100 %',
+  },
+  textField: {
+    width: '100%',
+    marginRight: theme.spacing(4),
+  },
+}));
 
+const Search = (props) => {
+  const classes = useStyles();
+  const { onSearch } = props;
   const [search, setSearch] = useState('');
-  const [pokemon, setPokemon] = useState();
 
   const onChange = (e) => {
     setSearch(e.target.value);
-    console.log(search);
   };
 
   const onClick = async (e) => {
-    console.log('search', search);
-    const data = await searchPokemon(search);
-    console.log(data);
-    setPokemon(data);
+    onSearch(search);
   };
 
   return (
-    <div>
-      <div>
-        <input placeholder="Buscar" onChange={onChange} />
+    <div className={classes.root}>
+      <div className={classes.textField}>
+        <TextField
+          label="Buscar por nombre o # de pokemon"
+          onChange={onChange}
+          variant="outlined"
+          fullWidth="true"
+        />
       </div>
       <div>
-        <button type="button" onClick={onClick}>
+        <Button
+          type="button"
+          onClick={onClick}
+          variant="contained"
+          color="secondary"
+        >
           Buscar
-        </button>
-      </div>
-      <div>Nombre: {pokemon?.name}</div>
-      <div>peso: {pokemon?.weight}</div>
-      <div>
-        <img src={pokemon?.sprites.back_default} alt="imagen-pokemon" />
+        </Button>
       </div>
     </div>
   );
