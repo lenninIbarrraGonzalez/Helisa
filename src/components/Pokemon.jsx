@@ -21,13 +21,14 @@ import { getPokemonEncounters } from '../../api';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    background: 'bisque',
+    // background: 'bisque',
     borderRadius: 20,
     justifyContent: 'space-between',
     minHeight: 200,
   },
   card: {
     borderRadius: 20,
+    // backgroundImage: "linear-gradient(rgba(177, 26, 38, 1), rgba(61, 153, 80, 1))",
   },
   details: {
     display: 'flex',
@@ -37,11 +38,11 @@ const useStyles = makeStyles((theme) => ({
   controls: {
     display: 'flex',
     alignItems: 'center',
-    background: 'violet',
+    // background: 'violet',
   },
   typeNames: {
     borderRadius: 7,
-    backgroundColor: 'aqua',
+    // backgroundColor: 'aqua',
     padding: theme.spacing(1),
     marginLeft: theme.spacing(2),
     marginBottom: theme.spacing(1),
@@ -54,13 +55,13 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 20,
     width: '40%',
     // height: 150,
-    background: 'red',
+    // background: 'red',
     overflow: 'hidden',
   },
   imagen: {
     width: '100%',
     height: 120,
-    background: 'yellow',
+    // background: 'yellow',
   },
   abilities: {
     paddingLeft: 3,
@@ -92,6 +93,71 @@ const Pokemon = (props) => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
+
+  let colore = '';
+  const colore2 = '';
+  const nomColor1 = pokemon.types[0].type.name;
+
+  if (nomColor1 === 'normal') {
+    colore = 'rgba(112, 82, 92, 0.2)';
+  }
+  if (nomColor1 === 'fighting') {
+    colore = 'rgba(145, 73, 51, 0.2)';
+  }
+  if (nomColor1 === 'flying') {
+    colore = 'rgba(73, 101, 123, 0.2)';
+  }
+  if (nomColor1 === 'poison') {
+    colore = 'rgba(158, 106, 212, 0.2)';
+  }
+  if (nomColor1 === 'ground') {
+    colore = 'rgba(109, 72, 30, 0.2)';
+  }
+  if (nomColor1 === 'rock') {
+    colore = 'rgba(73, 23, 9, 0.2)';
+  }
+  if (nomColor1 === 'bug') {
+    colore = 'rgba(61, 153, 80, 0.2)';
+  }
+  if (nomColor1 === 'ghost') {
+    colore = 'rgba(49, 52, 104, 0.2)';
+  }
+  if (nomColor1 === 'steel') {
+    colore = 'rgba(92, 117, 109, 0.2)';
+  }
+  if (nomColor1 === 'fire') {
+    colore = 'rgba(170, 31, 33, 0.2)';
+  }
+  if (nomColor1 === 'water') {
+    colore = 'rgba(21, 78, 227, 0.2)';
+  }
+  if (nomColor1 === 'grass') {
+    colore = 'rgba(12, 126, 56, 0.2)';
+  }
+  if (nomColor1 === 'electric') {
+    colore = 'rgba(199, 207, 81, 0.2)';
+  }
+  if (nomColor1 === 'psychic') {
+    colore = 'rgba(158, 43, 107,0.2)';
+  }
+  if (nomColor1 === 'ice') {
+    colore = 'rgba(133, 208, 241, 0.2)';
+  }
+  if (nomColor1 === 'dragon') {
+    colore = 'rgba(68, 138, 147, 0.2)';
+  }
+  if (nomColor1 === 'dark') {
+    colore = 'rgba(90, 90, 124, 0.2)';
+  }
+  if (nomColor1 === 'fairy') {
+    colore = 'rgba(177, 26, 38, 0.2)';
+  }
+  if (nomColor1 === 'unknown') {
+    colore = 'rgba(6, 7, 11, 0.2)';
+  }
+  if (nomColor1 === 'shadow') {
+    colore = 'rgba(218, 81, 254,0.2)';
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -168,7 +234,7 @@ const Pokemon = (props) => {
   });
 
   return (
-    <Card ref={element} className={classes.card}>
+    <Card ref={element} className={classes.card} style={{ background: colore }}>
       <CardActionArea onClick={handleClickOpen} className={classes.root}>
         {show && (
           <>
