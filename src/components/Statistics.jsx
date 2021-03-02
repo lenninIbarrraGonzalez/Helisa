@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { Pie, defaults, Bar } from 'react-chartjs-2';
 import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
 import { getPokemonsType, getPokemonCountType } from '../../api';
 
 defaults.global.tooltips.enabled = true;
@@ -11,6 +12,11 @@ defaults.global.legend.position = 'bottom';
 const useStyles = makeStyles((theme) => ({
   data: {
     display: 'none',
+  },
+  title: {
+    display: 'flex',
+    justifyContent: 'center',
+    margin: theme.spacing(3),
   },
 }));
 
@@ -45,12 +51,15 @@ const Statistics = () => {
   const typos = [];
   const countTypos = [];
   return (
-    <>
+    <Container>
       <div>
         <div className={classes.data}>
           {pokemonsTypes.map((item) => typos.push(item.name))}
           {pokemonsTypes.map((item) => countTypos.push(item.pokemon.length))}
         </div>
+        <Typography className={classes.title}>
+          Tipos de pokemones en gráfica tipo torta
+        </Typography>
         <Pie
           data={{
             labels: typos,
@@ -128,6 +137,9 @@ const Statistics = () => {
         />
       </div>
       <div>
+        <Typography className={classes.title}>
+          Tipos de pokemones en gráfica tipo barras
+        </Typography>
         <Bar
           data={{
             labels: typos,
@@ -204,7 +216,7 @@ const Statistics = () => {
           }}
         />
       </div>
-    </>
+    </Container>
   );
 };
 
